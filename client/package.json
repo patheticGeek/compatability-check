@@ -11,6 +11,7 @@
     "@twind/forms": "^0.1.4",
     "axios": "^0.21.3",
     "react": "^17.0.0",
+    "react-cookies": "^0.1.1",
     "react-dom": "^17.0.0",
     "react-hot-toast": "^2.1.1",
     "react-router-dom": "^5.3.0",

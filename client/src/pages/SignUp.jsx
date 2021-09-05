@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import cookie from "react-cookies";
 import axiosClient from "../utils/axios";
 import { toast } from "react-hot-toast";
 import { LockClosedIcon } from "@heroicons/react/solid";
@@ -22,6 +23,7 @@ const SignUp = () => {
         password,
       });
       console.log("data", response.data);
+      cookie.save("token", response.data.token, { path: "/" });
       toast.success("Created your account!");
     } catch (err) {
       console.log("err.response", err);

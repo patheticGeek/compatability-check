@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosClient from "../utils/axios";
+import cookie from "react-cookies";
 import { toast } from "react-hot-toast";
 import { LockClosedIcon } from "@heroicons/react/solid";
 
@@ -17,6 +18,7 @@ const Login = () => {
     try {
       const response = await axiosClient.post("/login", { email, password });
       console.log("data", response.data);
+      cookie.save("token", response.data.token, { path: "/" });
       toast.success("Successfully logged in");
     } catch (err) {
       console.log("err.response", err);
