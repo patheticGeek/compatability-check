@@ -4,7 +4,9 @@
   "description": "IDKKKKKKKKKKKKKKKKKKK'",
   "main": "index.js",
   "scripts": {
-    "install": "cd backend && yarn && cd ../frontend && yarn && cd ../"
+    "install": "cd backend && yarn && cd ../frontend && yarn && cd ../",
+    "build": "cd client && yarn build && cp -r dist/* ../backend/public",
+    "start": "cd backend && yarn start"
   },
   "repository": {
     "type": "git",

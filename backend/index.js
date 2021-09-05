@@ -120,7 +120,13 @@ app.get("/friend-data", async (req, res) => {
   }
 });
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("public"));
+}
+
 async function main() {
+  console.log("NODE_ENV", process.env.NODE_ENV);
+
   await mongoose.connect(process.env.DATABASE_URL);
 
   console.log("Database connected!");
