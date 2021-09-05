@@ -1,0 +1,19 @@
+{
+  "name": "compatability-check",
+  "version": "1.0.0",
+  "description": "IDKKKKKKKKKKKKKKKKKKK'",
+  "main": "index.js",
+  "scripts": {
+    "install": "cd backend && yarn && cd ../frontend && yarn && cd ../"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patheticGeek/compatability-check.git"
+  },
+  "author": "Pathetic Geek",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patheticGeek/compatability-check/issues"
+  },
+  "homepage": "https://github.com/patheticGeek/compatability-check#readme"
+}

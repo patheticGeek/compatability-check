@@ -1,10 +1,11 @@
 {
-  "name": "catfisher-backend",
+  "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Pathetic Geek",
   "license": "MIT",
   "scripts": {
+    "start": "node index.js",
     "dev": "nodemon index.js"
   },
   "dependencies": {
