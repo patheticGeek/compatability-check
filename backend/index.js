@@ -17,11 +17,7 @@ const bodyParser = require("body-parser");
 
 const JWT_VALIDITY = 1 * 24 * 60 * 60 * 1000; // for 1 day
 
-app.use(
-  cors({
-    origin: "http://localhost:3001",
-  })
-);
+app.use(cors());
 
 app.use(bodyParser.json());
 

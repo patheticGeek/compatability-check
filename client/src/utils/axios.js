@@ -2,7 +2,7 @@ import axios from "axios";
 import cookie from "react-cookies";
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: process.env.API_URL,
 });
 
 axiosClient.interceptors.request.use((config) => {
