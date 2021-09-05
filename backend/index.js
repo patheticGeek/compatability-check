@@ -4,18 +4,24 @@ const User = require("./models/user");
 const mongoose = require("mongoose");
 const express = require("express");
 const bcrypt = require("bcryptjs");
+var cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3000;
 
 const bodyParser = require("body-parser");
 
+app.use(
+  cors({
+    origin: "http://localhost:3001",
+  })
+);
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.post("/user", async (req, res) => {
+app.post("/signup", async (req, res) => {
   try {
     const userData = req.body;
 
@@ -33,11 +39,11 @@ app.post("/user", async (req, res) => {
 
     res.jsonp({ ...newUser.toJSON(), password: undefined });
   } catch (err) {
-    res.jsonp({ error: true, message: err.message });
+    res.status(400).jsonp({ error: true, message: err.message });
   }
 });
 
-app.get("/user", async (req, res) => {
+app.post("/login", async (req, res) => {
   try {
     const userData = req.body;
 
@@ -58,7 +64,7 @@ app.get("/user", async (req, res) => {
       throw new Error("Wrong password");
     }
   } catch (err) {
-    res.jsonp({ error: true, message: err.message });
+    res.status(400).jsonp({ error: true, message: err.message });
   }
 });
 
