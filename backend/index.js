@@ -1,11 +1,15 @@
 require("dotenv").config();
 
 const User = require("./models/user");
+const Crush = require("./models/crush");
 const mongoose = require("mongoose");
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const getUser = require("./utils/getUser");
+const { nanoid } = require("nanoid");
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -29,20 +33,22 @@ app.post("/signup", async (req, res) => {
   try {
     const userData = req.body;
 
-    const hashedPassword = bcrypt.hashSync(userData.password);
-    userData.password = hashedPassword;
-
     const isRegistered = await User.exists({ email: userData.email });
 
     if (isRegistered) {
       throw new Error("User already registered with that email address");
     }
 
+    const hashedPassword = bcrypt.hashSync(userData.password);
+    userData.password = hashedPassword;
+    userData.referer = nanoid(6);
+
     const newUser = new User(userData);
     await newUser.save();
 
+    const expireAt = Date.now() + JWT_VALIDITY;
     const token = jwt.sign(
-      { userId: newUser._id, createdAt: Date.now() },
+      { userId: newUser._id, expireAt },
       process.env.JWT_SECRET
     );
     res.jsonp({ ...newUser.toJSON(), token, password: undefined });
@@ -81,15 +87,33 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/verify-user", async (req, res) => {
-  const { authorization } = req.headers;
-  const token = authorization.replace("Bearer ", "");
+app.get("/verify-user", async (req, res) => {
+  try {
+    const data = getUser(req);
+    const user = await User.findById(data.userId);
+    res.jsonp({ ...data, user: user });
+  } catch (err) {
+    res.status(400).jsonp({ error: true, message: err.message });
+  }
+});
+
+app.post("/submit", async (req, res) => {
+  const data = req.body;
 
   try {
-    const data = jwt.verify(token, process.env.JWT_SECRET);
-    if (data && data.expireAt && data.expireAt < Date.now()) {
-      throw new Error("Token has expired");
-    }
+    const newCrush = new Crush(data);
+    await newCrush.save();
+    res.jsonp({ success: true, data: newCrush });
+  } catch (err) {
+    res.status(400).jsonp({ error: true, message: err.message });
+  }
+});
+
+app.get("/friend-data", async (req, res) => {
+  try {
+    const { userId } = getUser(req);
+    const { referer } = await User.findOne({ _id: userId });
+    const data = await Crush.find({ referer });
     res.jsonp(data);
   } catch (err) {
     res.status(400).jsonp({ error: true, message: err.message });
