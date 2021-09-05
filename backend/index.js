@@ -18,6 +18,7 @@ app.use(
     origin: "http://localhost:3001",
   })
 );
+
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {

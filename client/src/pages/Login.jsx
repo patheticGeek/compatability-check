@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import axiosClient from "../utils/axios";
 import cookie from "react-cookies";
+import { Redirect } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { LockClosedIcon } from "@heroicons/react/solid";
+import { useLoginState } from "../state";
 
 const Login = () => {
+  const { loggedIn, login: dispatchLogin } = useLoginState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -17,8 +20,8 @@ const Login = () => {
     setError("");
     try {
       const response = await axiosClient.post("/login", { email, password });
-      console.log("data", response.data);
       cookie.save("token", response.data.token, { path: "/" });
+      dispatchLogin(response.data);
       toast.success("Successfully logged in");
     } catch (err) {
       console.log("err.response", err);
@@ -26,6 +29,10 @@ const Login = () => {
     }
     setIsLoading(false);
   };
+
+  if (loggedIn) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
