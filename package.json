@@ -4,7 +4,7 @@
   "description": "IDKKKKKKKKKKKKKKKKKKK'",
   "main": "index.js",
   "scripts": {
-    "install": "cd backend && npm install && cd ../frontend && npm install && cd ../",
+    "install": "cd backend && npm install && cd ../client && npm install && cd ../ && npm i -g vite",
     "build": "cd client && npm run build && cp -r dist/* ../backend/public",
     "start": "cd backend && npm start"
   },
