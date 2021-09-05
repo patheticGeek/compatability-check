@@ -21,10 +21,6 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
 app.post("/signup", async (req, res) => {
   try {
     const userData = req.body;
@@ -117,7 +113,10 @@ app.get("/friend-data", async (req, res) => {
 });
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("public"));
+  app.use("/assets", express.static("public/assets"));
+  app.all("*", (req, res) =>
+    res.sendFile("public/index.html", { root: __dirname })
+  );
 }
 
 async function main() {
